@@ -1,0 +1,19 @@
+{
+  "name": "jarvis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "electron": "^43.1.0",
+    "express": "^5.2.1",
+    "ollama": "^0.6.3"
+  }
+}
