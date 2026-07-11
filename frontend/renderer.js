@@ -1,6 +1,39 @@
+const mic = document.getElementById("mic");
 const button = document.getElementById("ask");
 const question = document.getElementById("question");
 const reply = document.getElementById("reply");
+
+const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+const recognition = new SpeechRecognition();
+
+recognition.lang = "en-US";
+recognition.continuous = false;
+recognition.interimResults = false;
+
+// 3. Microphone Button
+mic.addEventListener("click", () => {
+    console.log("Mic clicked");
+    console.log("SpeechRecognition object:", recognition);
+    recognition.start();
+});
+
+// 4. Speech Recognition Result
+recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+
+    console.log("You said:", transcript);
+
+    question.value = transcript;
+};
+
+// 5. Speech Recognition Error
+recognition.onerror = (event) => {
+    console.error(event.error);
+    reply.innerText = "Speech recognition error: " + event.error;
+};
+
 
 button.addEventListener("click", async () => {
     try {
