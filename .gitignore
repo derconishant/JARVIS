@@ -6,3 +6,5 @@ whisper/models/*.bin
 
 # Test audio
 whisper/test.wav
+backend/audio/*.wav
+backend/audio/*.txt
