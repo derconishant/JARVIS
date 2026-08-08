@@ -16,6 +16,10 @@ async function fileActions(text) {
             .replace(/[.,!?]/g, "")
             .trim();
 
+            console.log("Received text:", text);
+            console.log("Folder:", folder);
+            console.log("Folder path:", folders[folder]);
+
         console.log("Folder name:", folder);
         console.log("Folder path:", folders[folder]);
 

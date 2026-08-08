@@ -1,3 +1,6 @@
+const fileActions = require("./modules/fileactions");
+const screenshotAction = require("./modules/screenshotAction");
+const systemActions = require("./modules/systemActions");
 const { exec } = require("child_process");
 const apps = require("./apps");
 const websites = require("./websites");
@@ -56,6 +59,13 @@ async function performAction(message) {
             return `Opening ${target}.`;
         }
     }
+        result = await fileActions(text);
+        if (result) return result;
+        result = await systemActions(text);
+        if (result) return result;
+
+        result = await screenshotAction(text);
+        if (result) return result;
 
     return null;
 }

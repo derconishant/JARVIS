@@ -18,9 +18,20 @@ app.post("/chat", async (req, res) => {
     try {
         const { message } = req.body;
 
-        console.log("Received:", message);
+        let command = message.trim();
 
-        const actionReply = await performAction(message);
+        if (!command.toLowerCase().startsWith("jarvis")) {
+        return res.json({
+        reply: "Wake word not detected."
+    });
+}
+
+// Remove "Jarvis" from the command
+command = command.replace(/^jarvis\s*/i, "").trim();
+
+        console.log("Received:", command);
+
+        const actionReply = await performAction(command);
 
         if (actionReply) {
             return res.json({
@@ -37,7 +48,7 @@ app.post("/chat", async (req, res) => {
                 },
                 {
                     role: "user",
-                    content: message
+                    content: command
                 }
             ]
         });
