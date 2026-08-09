@@ -1,4 +1,11 @@
-const { app, BrowserWindow, Tray, Menu, screen } = require("electron");
+const {
+    app,
+    BrowserWindow,
+    Tray,
+    Menu,
+    screen,
+    ipcMain
+} = require("electron");
 const path = require("path");
 
 let win;
@@ -15,6 +22,25 @@ function createWindow() {
             contextIsolation: false
         }
     });
+
+    ipcMain.on("show-overlay", () => {
+    if (overlay) {
+        overlay.show();
+        overlay.webContents.send("update-status", "Listening...");
+    }
+});
+
+ipcMain.on("hide-overlay", () => {
+    if (overlay) {
+        overlay.hide();
+    }
+});
+
+ipcMain.on("set-status", (event, status) => {
+    if (overlay) {
+        overlay.webContents.send("update-status", status);
+    }
+});
 
     win.loadFile("frontend/index.html");
 

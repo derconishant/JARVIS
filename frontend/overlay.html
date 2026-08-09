@@ -106,14 +106,21 @@
         <div class="orb"></div>
 
         <div class="title">
-            JARVIS
+           JARVIS
         </div>
 
-        <div class="status">
-            Listening...
-        </div>
+    <div id="status" class="status">
+             Idle
+    </div>
 
     </div>
+    <script>
+    const { ipcRenderer } = require("electron");
+
+    ipcRenderer.on("update-status", (event, status) => {
+        document.getElementById("status").innerText = status;
+    });
+</script>
 
 </body>
 

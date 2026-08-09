@@ -1,3 +1,4 @@
+const { ipcRenderer } = require("electron");
 const mic = document.getElementById("mic");
 const button = document.getElementById("ask");
 const question = document.getElementById("question");
@@ -9,7 +10,7 @@ const reply = document.getElementById("reply");
 async function askJarvis(message) {
     try {
         reply.innerText = "Thinking...";
-
+        ipcRenderer.send("set-status", "Thinking...");
         console.log("Sending:", message);
 
         const response = await fetch("http://localhost:3000/chat", {
@@ -23,12 +24,13 @@ async function askJarvis(message) {
         });
 
         const data = await response.json();
+       
 
         console.log("AI Reply:", data.reply);
 
         // Show reply
         reply.innerText = data.reply;
-
+ ipcRenderer.send("set-status", "Speaking...");
         // Clean reply for speech
         let cleanReply = data.reply
             .replace(/<think>[\s\S]*?<\/think>/gi, "")
@@ -56,7 +58,10 @@ async function askJarvis(message) {
         speech.volume = 1;
 
         speech.onstart = () => console.log("Speech Started");
-        speech.onend = () => console.log("Speech Finished");
+        speech.onend = () => {
+    console.log("Speech Finished");
+    ipcRenderer.send("hide-overlay");
+};
         speech.onerror = (e) => console.error(e);
 
         speechSynthesis.speak(speech);
@@ -87,6 +92,8 @@ mic.addEventListener("click", async () => {
 
     try {
 
+        ipcRenderer.send("show-overlay");
+
         reply.innerText = "🎤 Listening...";
 
         const response = await fetch("http://localhost:3000/voice", {
@@ -94,6 +101,7 @@ mic.addEventListener("click", async () => {
         });
 
         const data = await response.json();
+        
 
         console.log("Recognized:", data.text);
 
